@@ -1,6 +1,7 @@
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
 from .filters import CarFilter
+from .permission import IsSeller, IsBuyer, IsAdmin, IsOwner, IsSellerOwner, IsSellerOrAdmin
 from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend, OrderingFilter
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -38,32 +39,47 @@ class CarListAPIView(generics.ListAPIView):
     ordering_fields = ['price', 'year']
     ordering = ["-created_at"]
     filterset_class = CarFilter
-
+    permission_classes = [AllowAny]
 
 
 class CarDetailAPIView(generics.RetrieveAPIView):
     queryset = Car.objects.all()
     serializer_class = CarDetailSerializer
+    permission_classes = [AllowAny]
+
+
+class CarCreateAPIView(generics.CreateAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = [IsSellerOrAdmin]
 
 
 class CarImageViewSet(viewsets.ModelViewSet):
     queryset = CarImage.objects.all()
     serializer_class = CarImageSerializer
+    permission_classes = [IsSellerOrAdmin]
 
 
-class AuctionViewSet(viewsets.ModelViewSet):
+class AuctionListCreateAPIView(generics.ListCreateAPIView):
     queryset = Auction.objects.all()
     serializer_class = AuctionSerializer
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsSeller()]
+        return [AllowAny()]
 
 
 class BidAPIView(generics.CreateAPIView):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
+    permission_classes = [IsBuyer]
 
 
 class FeedbackAPIView(generics.CreateAPIView):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
+    permission_classes = [IsBuyer]
 
 
 class RegisterView(generics.CreateAPIView):

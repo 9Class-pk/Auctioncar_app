@@ -1,7 +1,7 @@
 from .views import (UserProfileListAPIView, BrandViewSet, ModelCarViewSet,
-                    CarListAPIView, CarImageViewSet, AuctionViewSet,
+                    CarListAPIView, CarImageViewSet, AuctionListCreateAPIView,
                     BidAPIView, FeedbackAPIView, CarDetailAPIView,
-                    UserProfileDetailAPIView, RegisterView, LogoutView)
+                    UserProfileDetailAPIView, RegisterView, LogoutView, CarCreateAPIView)
 from rest_framework_simplejwt.views import(
         TokenObtainPairView,
     TokenRefreshView,TokenBlacklistView)
@@ -14,15 +14,17 @@ router = SimpleRouter()
 router.register('brand', BrandViewSet)
 router.register('model', ModelCarViewSet)
 router.register('car-image', CarImageViewSet)
-router.register('auction', AuctionViewSet)
+
 
 
 urlpatterns = [
 path('', include(router.urls)),
     path('cars/', CarListAPIView.as_view(), name='cars_list'),
     path('cars/<int:pk>/', CarDetailAPIView.as_view(), name='cars_detail'),
+    path('cars-create/', CarCreateAPIView.as_view(), name='cars_create'),
     path('bids/', BidAPIView.as_view(), name='bid_create'),
     path('feedbacks/', FeedbackAPIView.as_view(), name='feedback_create'),
+    path('auctions/', AuctionListCreateAPIView.as_view(), name='auctions'),
     path('users/', UserProfileListAPIView.as_view(), name='user_list'),
     path('users/<int:pk>/', UserProfileDetailAPIView.as_view(), name='user_detail'),
     path('register/', RegisterView.as_view(), name='register'),

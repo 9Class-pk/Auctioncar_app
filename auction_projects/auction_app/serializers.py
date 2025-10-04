@@ -101,6 +101,11 @@ class CarDetailSerializer(serializers.ModelSerializer):
                   'mileage', 'price', 'description', 'seller']
 
 
+class CarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
+
 
 class AuctionSerializer(serializers.ModelSerializer):
     class Meta:
