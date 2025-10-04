@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 class UserProfile(AbstractUser):
     ROLE_CHOICES = (
@@ -13,7 +14,7 @@ class UserProfile(AbstractUser):
     phone_number = PhoneNumberField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.username}, {self.role}'
+        return f'{self.first_name}, {self.last_name}, {self.role}'
 
 
 class Brand(models.Model):
@@ -99,6 +100,7 @@ class Feedback(models.Model):
     buyer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='buyers_user')
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.seller}, {self.buyer}, {self.rating}, {self.comment}'
