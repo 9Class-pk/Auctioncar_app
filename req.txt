@@ -1,0 +1,11 @@
+asgiref==3.9.2
+Django==5.2.7
+django-nested-admin==4.1.4
+django-phonenumber-field==8.2.0
+djangorestframework==3.16.1
+dotenv==0.9.9
+phonenumbers==9.0.15
+pillow==11.3.0
+python-dotenv==1.1.1
+python-monkey-business==1.1.0
+sqlparse==0.5.3
