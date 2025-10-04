@@ -4,6 +4,7 @@ from .filters import CarFilter
 from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend, OrderingFilter
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import(
         TokenObtainPairView, TokenRefreshView)
 
@@ -97,6 +98,9 @@ class CustomLoginView(TokenObtainPairView):
 
 
 class LogoutView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+
     def post(self, request, *args, **kwargs):
         try:
             refresh_token = request.data["refresh"]
